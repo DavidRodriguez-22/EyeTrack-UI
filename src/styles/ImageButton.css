@@ -1,0 +1,34 @@
+.image-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    margin: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    outline: none;
+  }
+  
+  .image-button:hover,
+  .image-button:focus {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  }
+  
+  .image-button-img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 8px;
+  }
+  
+  .image-button-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333333;
+    text-align: center;
+  }
+  
