@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+/*import React, { useEffect, useRef } from 'react';
 import '../styles/Emergencia.css'; // Crearemos este archivo CSS
 
 export default function Emergencia() {
@@ -20,7 +20,6 @@ export default function Emergencia() {
 
   return (
     <div className="emergencia-container">
-      {/* Audio oculto que se reproduce automáticamente */}
       <audio ref={audioRef} loop>
         <source src="/sounds/alarma.mp3" type="audio/mpeg" />
         Tu navegador no soporta el elemento de audio.
@@ -38,4 +37,4 @@ export default function Emergencia() {
       </div>
     </div>
   );
-}
+}/*}
