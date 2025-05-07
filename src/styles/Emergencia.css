@@ -1,0 +1,37 @@
+.emergencia-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #ffebee;
+    animation: pulse 2s infinite;
+  }
+  
+  .emergencia-title {
+    color: #d32f2f;
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+  
+  .emergencia-image {
+    width: 200px;
+    height: 200px;
+    margin: 2rem 0;
+  }
+  
+  .emergencia-text {
+    color: #b71c1c;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  @keyframes pulse {
+    0% { background-color: #ffebee; }
+    50% { background-color: #ffcdd2; }
+    100% { background-color: #ffebee; }
+  }
