@@ -2,11 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ImageButton.css';
 
-export default function ImageButton({ src, alt, to }) {
+interface ImageButtonProps {
+  src: string;
+  alt: string;
+  to: string;
+  color?: string;
+}
+
+export default function ImageButton({ src, alt, to, color = "#da8585" }: ImageButtonProps) {
   const navigate = useNavigate();
 
   const handleClick = () => navigate(to);
-  const handleKeyDown = (e) => {
+  
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       handleClick();
@@ -21,6 +29,18 @@ export default function ImageButton({ src, alt, to }) {
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       aria-label={alt}
+      style={{ 
+        backgroundColor: color,
+        // Estilos base para mantener la funcionalidad
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        borderRadius: '16px',
+        padding: '16px',
+        margin: '12px',
+        cursor: 'pointer',
+        transition: 'transform 0.2s ease'
+      }}
     >
       <img src={src} alt={alt} className="image-button-img" />
       <span className="image-button-text">{alt}</span>

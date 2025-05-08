@@ -24,6 +24,7 @@
   text-transform: uppercase;
   font-weight: 900;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  font-family: 'Black Ops One', cursive;
 }
 
 .emergencia-image {
@@ -68,7 +69,7 @@
 }
 
 .audio-control.active {
-  background-color: #4caf50;
+  background-color: #ffb2d2;
 }
 
 /* Responsive para móviles */
@@ -125,6 +126,7 @@
 /* Ajuste para el título */
 .emergencia-title {
   margin-top: 60px; /* Más espacio para el botón */
+  font-family: 'Black Ops One', cursive;
 }
 
 /* Versión móvil */
@@ -138,6 +140,7 @@
   
   .emergencia-title {
     margin-top: 50px;
+    font-family: 'Black Ops One', cursive;
   }
   @media (max-width: 768px) {
     .emergencia-image {

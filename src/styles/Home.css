@@ -12,6 +12,7 @@
     font-size: 45px;
     color: #1e2a3a;
     margin-bottom: 24px;
+    font-family: 'Black Ops One', cursive;
     text-align: center;
   }
   
@@ -79,6 +80,8 @@
 /* Ajuste para el título principal */
 .home-title {
   margin-top: 40px; /* Espacio para el botón */
+  font-family: 'Black Ops One', cursive;
+  
 }
 
 /* Responsive para móviles */
@@ -92,6 +95,7 @@
   .home-title {
     margin-top: 35px;
     font-size: 32px;
+    font-family: 'Black Ops One', cursive;
   }
   
   .grid-container {
