@@ -5,7 +5,7 @@ import '../styles/Home.css';
 export default function Home() {
   return (
     <div className="home-container">
-      <h1 className="home-title">¿Que quieres comunicar?</h1>
+      <h1 className="home-title">¿QUE QUIERES COMUNICAR?</h1>
 
       <div className="grid-container">
         <ImageButton src="/images/emergencias.png" alt="Emergencias" to="/Emergencias" />

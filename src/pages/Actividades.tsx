@@ -1,30 +1,37 @@
 import React from 'react';
-import ImageButton from "../components/ImageButton";
-import '../styles/Home.css'; // Reutilizamos los estilos
+import VozButton from "../components/VozButton";
+import { useNavigate } from 'react-router-dom';
+import '../styles/Home.css';
 
 export default function Actividades() {
+  const navigate = useNavigate();
+
   return (
     <div className="home-container">
-      <h1 className="home-title">Actividades</h1> {/* Título específico */}
+      {/* Botón de regreso */}
+      <button onClick={() => navigate('/')} className="back-button">
+       <span className="back-icon">←</span> MENÚ PRINCIPAL
+      </button>
+
+      <h1 className="home-title">Actividades</h1>
 
       <div className="grid-container">
-        {/* Botones específicos para actividades */}
-        <ImageButton 
+        <VozButton 
           src="/images/television.png" 
-          alt="Ver televisión" 
-          to="/television" // O puedes usar "#" si no es una ruta real
+          alt="Quiero ver televisión" 
         />
-        <ImageButton 
+        <VozButton 
           src="/images/musica.png" 
-          alt="Escuchar música" 
-          to="/musica" 
+          alt="Quiero escuchar música" 
         />
-        <ImageButton 
+        <VozButton 
           src="/images/leer.png" 
-          alt="Leer" 
-          to="/leer" 
+          alt="Quiero leer un libro" 
         />
-        {/* Agrega más botones según necesites */}
+        <VozButton 
+          src="/images/audiolibro.png" 
+          alt="Quiero escuchar un audio libro" 
+        />
       </div>
     </div>
   );

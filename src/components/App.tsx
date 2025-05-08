@@ -5,7 +5,7 @@ import Necesidades from "../pages/Necesidades";
 import Actividades from "../pages/Actividades";
 import Comodidad from "../pages/Comodidad";
 import Emociones from "../pages/Emociones"; 
-//import Emergencia from "../pages/Emergencias";// Asegúrate de importar la página
+import Emergencia from "../pages/Emergencias";// Asegúrate de importar la página
 import EyeControl from "../components/EyeControl"; // Si lo usas
 
 const App: React.FC = () => {
@@ -18,7 +18,7 @@ const App: React.FC = () => {
         <Route path="/actividades" element={<Actividades />} /> 
         <Route path="/comodidad" element={<Comodidad />} />
         <Route path="/emociones" element={<Emociones />} /> 
-        {/*<Route path="/emergencias" element={<Emergencia />} />*/}
+        <Route path="/emergencias" element={<Emergencia />} />
         {/* Nueva ruta */}
       </Routes>
     </Router>

@@ -1,37 +1,44 @@
 import React from 'react';
-import ImageButton from "../components/ImageButton";
+import VozButton from "../components/VozButton";
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import '../styles/Home.css';
 
 export default function Emociones() {
+  const navigate = useNavigate(); // Obtiene la función de navegación
+
   return (
     <div className="home-container">
+      {/* Botón de regreso */}
+      <button 
+        onClick={() => navigate('/')}
+        className="back-button"
+        aria-label="Volver al menú principal"
+      >
+        <span className="back-icon">←</span> MENÚ PRINCIPAL
+      </button>
+
       <h1 className="home-title">Emociones</h1>
 
       <div className="grid-container">
-        <ImageButton 
+        <VozButton 
           src="/images/estoy-bien.png" 
           alt="Estoy bien" 
-          to="/estoy-bien" 
         />
-        <ImageButton 
+        <VozButton 
           src="/images/quiero-estar-solo.png" 
           alt="Quiero estar solo" 
-          to="/quiero-estar-solo" 
         />
-        <ImageButton 
+        <VozButton 
           src="/images/enojado.png" 
           alt="Estoy enojado" 
-          to="/enojado" 
         />
-        <ImageButton 
+        <VozButton 
           src="/images/feliz.png" 
           alt="Estoy feliz" 
-          to="/feliz" 
         />
-        <ImageButton 
+        <VozButton 
           src="/images/triste.png" 
           alt="Estoy triste" 
-          to="/triste" 
         />
       </div>
     </div>

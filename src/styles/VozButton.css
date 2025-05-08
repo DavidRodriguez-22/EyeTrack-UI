@@ -1,0 +1,52 @@
+.voz-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    margin: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    outline: none;
+    position: relative;
+  }
+  
+  .voz-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  }
+  
+  .voz-button:active {
+    background-color: #45f3a2;
+  }
+  
+  .voz-button-img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 8px;
+  }
+  
+  .voz-button-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #000000;
+    text-align: center;
+  }
+  
+  .voz-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+  
+  /* Efecto durante la reproducción */
+  .voz-button.speaking {
+    background-color: #47aaf1;
+    box-shadow: 0 0 0 3px #bbdefb;
+  }
