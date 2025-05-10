@@ -8,7 +8,7 @@ export default function Necesidades() {
 
   return (
     <div className="home-container">
-      {/* Botón de regreso con estilo amarillo */}
+      {}
       <button 
         onClick={() => navigate('/')}
         className="back-button"
@@ -17,39 +17,40 @@ export default function Necesidades() {
         <span className="back-icon">←</span> MENÚ PRINCIPAL
       </button>
 
-      <h1 className="home-title">Necesidades</h1>
+      <h1 className="home-title">NECESIDADES</h1>
 
       <div className="grid-container">
         <VozButton 
-          src="/images/hambre.png" 
+          src="/images/hambre.gif" 
           alt="Tengo hambre, necesito comer" 
           className="necesidad-button"
+          color="#ffae8c"
         />
         <VozButton 
-          src="/images/sed.png" 
+          src="/images/sed.gif" 
           alt="Tengo sed, necesito una bebida" 
           className="necesidad-button"
+          color="#ffae8c"
         />
         <VozButton 
-          src="/images/banio.png" 
+          src="/images/inodoro.gif" 
           alt="Necesito ir al baño urgente" 
           className="necesidad-button"
+          color="#ffae8c"
         />
         <VozButton 
-          src="/images/medicina.png" 
+          src="/images/medicina.gif" 
           alt="Necesito tomar mis medicinas" 
           className="necesidad-button"
+          color="#ffae8c"
         />
         <VozButton 
-          src="/images/descanso.png" 
+          src="/images/descanso.gif" 
           alt="Necesito descansar un momento" 
           className="necesidad-button"
+          color="#ffae8c"
         />
-        <VozButton 
-          src="/images/ayuda.png" 
-          alt="Necesito ayuda por favor" 
-          className="necesidad-button"
-        />
+        
       </div>
     </div>
   );

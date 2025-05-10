@@ -1,18 +1,16 @@
 import React from 'react';
-import '../styles/VozButton.css'; // Crearemos este archivo de estilos
+import '../styles/VozButton.css';
 
 interface VozButtonProps {
   src: string;
   alt: string;
   className?: string;
+  color?: string; // Nuevo prop para el color
 }
 
-const VozButton: React.FC<VozButtonProps> = ({ src, alt, className }) => {
+const VozButton: React.FC<VozButtonProps> = ({ src, alt, className, color }) => {
   const speak = () => {
-    // Detener cualquier voz previa
     window.speechSynthesis.cancel();
-    
-    // Configurar y reproducir el nuevo mensaje
     const utterance = new SpeechSynthesisUtterance(alt);
     utterance.lang = 'es-ES';
     utterance.rate = 1.0;
@@ -24,10 +22,11 @@ const VozButton: React.FC<VozButtonProps> = ({ src, alt, className }) => {
       className={`voz-button ${className || ''}`} 
       onClick={speak}
       aria-label={`Decir: ${alt}`}
+      style={{ backgroundColor: color }} // Aplica el color aquí
     >
       <img src={src} alt={alt} className="voz-button-img" />
       <span className="voz-button-text">{alt}</span>
-      <span className="voz-icon">🔊</span> {/* Icono de altavoz */}
+      <span className="voz-icon">🔊</span>
     </button>
   );
 };

@@ -13,24 +13,28 @@ export default function Actividades() {
        <span className="back-icon">←</span> MENÚ PRINCIPAL
       </button>
 
-      <h1 className="home-title">Actividades</h1>
+      <h1 className="home-title">ACTIVIDADES</h1>
 
       <div className="grid-container">
         <VozButton 
-          src="/images/television.png" 
+          src="/images/tv.gif" 
           alt="Quiero ver televisión" 
+          color="#ffe77e"
         />
         <VozButton 
-          src="/images/musica.png" 
-          alt="Quiero escuchar música" 
+          src="/images/musica.gif" 
+          alt="Quiero escuchar música"
+          color="#ffe77e" 
         />
         <VozButton 
-          src="/images/leer.png" 
+          src="/images/leer.gif" 
           alt="Quiero leer un libro" 
+          color="#ffe77e"
         />
         <VozButton 
-          src="/images/audiolibro.png" 
+          src="/images/audiolibro.gif" 
           alt="Quiero escuchar un audio libro" 
+          color="#ffe77e"
         />
       </div>
     </div>

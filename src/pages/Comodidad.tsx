@@ -1,54 +1,60 @@
 import React from 'react';
 import VozButton from "../components/VozButton";
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import '../styles/Home.css';
 
 export default function Comodidad() {
-  const navigate = useNavigate(); // Obtiene la función de navegación
+  const navigate = useNavigate(); 
 
   return (
     <div className="home-container">
-      {/* Botón de regreso */}
+      {}
       <button 
-        onClick={() => navigate('/')} // Navega a Home
+        onClick={() => navigate('/')} 
         className="back-button"
         aria-label="Volver al menú principal"
       >
         <span className="back-icon">←</span> MENÚ PRINCIPAL
       </button>
 
-      <h1 className="home-title">Comodidad</h1>
+      <h1 className="home-title">COMODIDAD</h1>
 
       <div className="grid-container">
         <VozButton 
-          src="/images/frio.png" 
-          alt="Tengo frío, quiero un abrigo" 
+          src="/images/frio.gif" 
+          alt="Tengo frío" 
           className="comodidad-button"
+          color="#a6ff9b"
         />
         <VozButton 
-          src="/images/calor.png" 
-          alt="Tengo calor, quiero refrescarme" 
+          src="/images/calor.gif" 
+          alt="Tengo calor" 
           className="comodidad-button"
+          color="#a6ff9b"
         />
         <VozButton 
-          src="/images/posicion.png" 
+          src="/images/posicion.gif" 
           alt="Quiero cambiar de posición" 
           className="comodidad-button"
+          color="#a6ff9b"
         />
         <VozButton 
-          src="/images/dolor.png" 
+          src="/images/dolor.gif" 
           alt="Me duele algo" 
           className="comodidad-button"
+          color="#a6ff9b"
         />
         <VozButton 
-          src="/images/pica.png" 
+          src="/images/pica.gif" 
           alt="Me pica una parte del cuerpo" 
           className="comodidad-button"
+          color="#a6ff9b"
         />
         <VozButton 
-          src="/images/descansar.png" 
+          src="/images/descansar.gif" 
           alt="Quiero descansar" 
           className="comodidad-button"
+          color="#a6ff9b"
         />
       </div>
     </div>

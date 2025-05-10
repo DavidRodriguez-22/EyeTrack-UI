@@ -19,44 +19,44 @@
 
 .emergencia-title {
   color: #d32f2f;
-  font-size: 2.5rem;
+  font-size: 2.9rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
   font-weight: 900;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
   font-family: 'Black Ops One', cursive;
 }
 
 .emergencia-image {
-  width: 500px;
-  height: 500px;
+  width: 750px;
+  height: 450px;
   object-fit: contain;
-  border-radius: 50px; 
+  border-radius: 10px; 
 }
 
 .emergencia-text {
   color: #b71c1c;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   margin: 1rem 0;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .audio-control {
-  padding: 28px 46px; /* Más grande que antes (12px 24px) */
+  padding: 35px 46px; 
   background-color: #d32f2f;
   color: white;
   border: none;
   border-radius: 50px;
-  font-size: 1.5rem; /* Aumentado de 1.1rem */
+  font-size: 1.5rem; 
   cursor: pointer;
-  margin: 2rem auto; /* Centrado horizontal con margen superior/inferior */
+  margin: 2rem auto; 
   display: flex;
   align-items: center;
-  justify-content: center; /* Texto e icono centrados */
-  gap: 12px; /* Más espacio entre icono y texto */
+  justify-content: center;
+  gap: 15px; 
   transition: all 0.3s ease;
-  width: auto; /* Ancho automático basado en contenido */
-  min-width: 250px; /* Ancho mínimo para evitar que sea muy pequeño */
+  width: auto; 
+  min-width: 250px; 
 }
 
 .audio-control:hover {
@@ -72,7 +72,7 @@
   background-color: #ffb2d2;
 }
 
-/* Responsive para móviles */
+
 @media (max-width: 768px) {
   .audio-control {
     padding: 16px 32px;
@@ -86,9 +86,9 @@
   }
 }
 
-/* Efectos especiales para el botón */
+
 .audio-control:hover {
-  transform: scale(1.08); /* Efecto de escala más pronunciado */
+  transform: scale(1.08); 
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -96,7 +96,7 @@
   transform: scale(1);
 }
 
-/* Botón de regreso (emergencia) */
+
 .back-button {
   position: fixed;
   top: 20px;
@@ -123,13 +123,13 @@
   transform: translateY(-2px);
 }
 
-/* Ajuste para el título */
+
 .emergencia-title {
-  margin-top: 60px; /* Más espacio para el botón */
+  margin-top: 60px; 
   font-family: 'Black Ops One', cursive;
 }
 
-/* Versión móvil */
+
 @media (max-width: 768px) {
   .back-button {
     top: 15px;
