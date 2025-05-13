@@ -56,7 +56,7 @@ export default function Emergencia() {
 
   return (
     <div className="emergencia-container">
-      {/* Botón de regreso */}
+      {}
       <button 
         onClick={() => navigate('/')}
         className="back-button"
@@ -65,13 +65,13 @@ export default function Emergencia() {
         <span className="back-icon">←</span> MENÚ PRINCIPAL
       </button>
 
-      {/* Elemento de audio */}
+      {}
       <audio ref={audioRef} loop preload="auto">
         <source src="/sonidos/ambulancia.mp3" type="audio/mpeg" />
         Tu navegador no soporta audio HTML5.
       </audio>
 
-      {/* Contenido visual */}
+      {}
       <h1 className="emergencia-title">¡EMERGENCIA!</h1>
       
       <div className="emergencia-content">

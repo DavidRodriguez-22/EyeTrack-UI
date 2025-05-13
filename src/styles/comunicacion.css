@@ -1,0 +1,357 @@
+/* Mantenemos los estilos originales y añadimos los nuevos */
+.home-container {
+    min-height: 100vh;
+    padding: 32px;
+    background-color: #e5fffd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Cambiado de center a flex-start */
+}
+
+.home-title {
+    font-size: 45px;
+    color: #1e2a3a;
+    margin-bottom: 24px;
+    font-family: 'Black Ops One', cursive;
+    text-align: center;
+}
+
+/* Estilos para la sección de comunicación */
+.comunicacion-container {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-group {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 25px;
+    gap: 15px;
+}
+
+.frase-input {
+    flex: 1;
+    padding: 12px;
+    font-size: 15px;
+    border: 3px solid #059db1;
+    border-radius: 15px;
+    background-color: #ffffff;
+    color: #1e2a3a;
+    transition: all 0.3s;
+}
+
+.frase-input:focus {
+    outline: none;
+    border-color: #36ffee;
+    box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+}
+
+.add-button {
+    padding: 0 30px;
+    background-color: #42f4f4;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.add-button:hover {
+    background-color: #3367d6;
+    transform: translateY(-2px);
+}
+
+.frases-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 1mm aproximadamente */
+    max-width: 600px;
+}
+
+.frase-button {
+    width: 100%;
+    padding: 20px;
+    background-color: #e8f0fe; /* Azul claro */
+    color: #b0d2ff; /* Texto negro */
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.frase-button:hover {
+    background-color: #d2e3fc;
+    transform: translateY(-2px);
+}
+
+.no-frases, .voz-error {
+    font-size: 20px;
+    color: #1e2a3a;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.voz-error {
+    color: #89ccf3;
+    font-weight: bold;
+}
+
+/* Estilo para el botón de mayúsculas */
+.caps-lock {
+  font-weight: bold;
+  min-width: 60px !important;
+}
+
+.caps-lock.active {
+  background-color: #003f58;
+  color: white;
+}
+
+/* Ajustes para teclas especiales */
+.space-key {
+  min-width: 250px;
+}
+
+.special-keys .keyboard-key {
+  min-width: 150px;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 25px; /* Aumenta este valor para más separación */
+  margin-bottom: 25px; /* Espacio entre filas */
+}
+/* Ajustes para el texto en mayúsculas */
+.keyboard-key {
+  min-width: 50px;
+  height: 60px;
+  padding: 0 15px;
+  background-color: #ffffff;
+  color: #1e2a3a;
+  border: 2px solid #059db1;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.space-key {
+  min-width: 300px; /* Más ancho para la barra espaciadora */
+}
+
+.special-keys .keyboard-key {
+  min-width: 100px;
+}
+
+/* Efectos al interactuar con las teclas */
+.keyboard-key:hover {
+  background-color: #e5fffd;
+  transform: translateY(-2px);
+}
+
+.keyboard-key:active {
+  transform: scale(0.95);
+  background-color: #c2fffc;
+}
+
+/* Mejoras visuales para el teclado */
+.virtual-keyboard {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  user-select: none;
+}
+
+.keyboard-key {
+  transition: all 0.1s ease;
+}
+
+.keyboard-key:active {
+  transform: scale(0.95);
+  background-color: #c2fffc;
+}
+
+/* Estilo para el botón de borrar todo */
+.clear-button {
+  background-color: #4ecdff;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.clear-button:hover:not(:disabled) {
+  background-color: #27fff4;
+  transform: translateY(-2px);
+}
+
+.clear-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Estilo para la tecla de borrar todo en el teclado */
+.clear-all-key {
+  background-color: #0677a3;
+  color: white;
+  min-width: 100px;
+}
+
+.clear-all-key:hover {
+  background-color: #ffffff;
+}
+
+/* Ajustes para el grupo de botones */
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .toggle-keyboard-btn,
+  .speak-button,
+  .clear-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ========== A PARTIR DE AQUÍ SE MANTIENE TODO IGUAL ========== */
+/* Mantenemos los estilos del botón de retroceso original */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 14px 28px;
+    background-color: #fff;
+    color: #d32f2f;
+    border: 2px solid #d32f2f;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-button:hover {
+    background-color: #d32f2f;
+    color: white;
+    transform: translateY(-2px);
+}
+/* Estilos para el área de texto de comunicación */
+.communication-content {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.communication-input {
+  width: 100%;
+  min-height: 100px; /* Altura inicial más grande */
+  padding: 20px;
+  font-size: 20px;
+  border: 3px solid #059db1;
+  border-radius: 15px;
+  background-color: #ffffff;
+  color: #1e2a3a;
+  resize: none; /* Evita que el usuario pueda redimensionar */
+  margin-bottom: 20px;
+  transition: all 0.3s;
+  line-height: 1.5;
+}
+
+.communication-input:focus {
+  outline: none;
+  border-color: #36ffee;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .home-title {
+        font-size: 32px;
+        margin-top: 35px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .add-button {
+        padding: 15px;
+        width: 100%;
+    }
+    
+    .frase-input, .add-button, .frase-button {
+        font-size: 18px;
+    }
+    
+    .back-button {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+    .frase-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1mm;
+}
+
+.delete-button {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+  transform: scale(1.1);
+}
+}

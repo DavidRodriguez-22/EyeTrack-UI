@@ -34,7 +34,7 @@ export default function Necesidades() {
         />
         <VozButton 
           src="/images/inodoro.gif" 
-          alt="Necesito ir al baño urgente" 
+          alt="Necesito ir al baño 💩🚽 " 
           className="necesidad-button"
           color="#ffae8c"
         />
@@ -47,6 +47,12 @@ export default function Necesidades() {
         <VozButton 
           src="/images/descanso.gif" 
           alt="Necesito descansar un momento" 
+          className="necesidad-button"
+          color="#ffae8c"
+        />
+        <VozButton 
+          src="/images/ducha.gif" 
+          alt="Necesito una ducha" 
           className="necesidad-button"
           color="#ffae8c"
         />

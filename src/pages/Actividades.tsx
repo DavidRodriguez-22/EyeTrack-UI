@@ -36,6 +36,16 @@ export default function Actividades() {
           alt="Quiero escuchar un audio libro" 
           color="#ffe77e"
         />
+        <VozButton 
+          src="/images/sol.gif" 
+          alt="Quiero tomar un poco de sol" 
+          color="#ffe77e"
+        />
+        <VozButton 
+          src="/images/fisica.gif" 
+          alt="Quiero realizar un poco de fisioterapia" 
+          color="#ffe77e"
+        />
       </div>
     </div>
   );

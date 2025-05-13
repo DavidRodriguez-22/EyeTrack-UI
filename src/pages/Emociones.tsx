@@ -45,6 +45,11 @@ export default function Emociones() {
           alt="Estoy triste" 
           color="#9d85ff"
         />
+        <VozButton 
+          src="/images/shock.gif" 
+          alt="Estoy en shock" 
+          color="#9d85ff"
+        />
       </div>
     </div>
   );

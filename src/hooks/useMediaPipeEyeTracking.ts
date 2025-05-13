@@ -84,7 +84,7 @@ export function useMediaPipeEyeTracking() {
       const centerY = 0.5; 
 
       const deadZone = 0.1; //Zona muerta para evitar movimientos por accidente
-      const speedFactor = 15; //Velocidad de movimiento en X y Y
+      const speedFactor = 30; //Velocidad de movimiento en X y Y
 
       let deltaX = relativeX - centerX;
       let deltaY = relativeY - centerY;

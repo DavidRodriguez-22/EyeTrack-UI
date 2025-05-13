@@ -31,7 +31,6 @@ export default function ImageButton({ src, alt, to, color = "#da8585" }: ImageBu
       aria-label={alt}
       style={{ 
         backgroundColor: color,
-        // Estilos base para mantener la funcionalidad
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

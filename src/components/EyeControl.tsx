@@ -1,7 +1,7 @@
 // src/components/EyeControl.tsx
 import React from "react";
-import { useCustomCursor } from "../hooks/useCustomCursor";
-import { useMediaPipeEyeTracking } from "../hooks/useMediaPipeEyeTracking";
+import { useCustomCursor } from "../hooks/useCustomCursor.ts";
+import { useMediaPipeEyeTracking } from "../hooks/useMediaPipeEyeTracking.ts";
 
 const EyeControl: React.FC = () => {
   useCustomCursor();

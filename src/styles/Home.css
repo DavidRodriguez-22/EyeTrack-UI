@@ -25,25 +25,25 @@
   
   .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas de igual ancho */
-    grid-template-rows: repeat(2, auto);   /* 2 filas */
-    gap: 20px;                            /* Espacio entre cartas */
+    grid-template-columns: repeat(3, 1fr); 
+    grid-template-rows: repeat(2, auto);   
+    gap: 20px;                        
     padding: 30px;
     max-width: 1000px;
     margin: 0 auto;
-    justify-items: center; /* Centra horizontalmente */
-    align-items: center;   /* Centra verticalmente (opcional) */
+    justify-items: center; 
+    align-items: center;   
   }
   
   .card {
-    width: 200px;  /* Ancho fijo */
-    height: 200px; /* Altura fija (opcional) */
+    width: 200px; 
+    height: 200px; 
   }
 
   @media (max-width: 768px) {
   .grid-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas en móviles */
-    grid-template-rows: repeat(3, auto);   /* 3 filas */
+    grid-template-columns: repeat(2, 1fr); 
+    grid-template-rows: repeat(3, auto);  
   }
 }
 
@@ -77,19 +77,19 @@
   transform: translateY(0);
 }
 
-/* Ajuste para el título principal */
+
 .home-title {
-  margin-top: 40px; /* Espacio para el botón */
+  margin-top: 40px; 
   font-family: 'Black Ops One', cursive;
   
 }
 
-/* Responsive para móviles */
+
 @media (max-width: 768px) {
   .back-button {
     padding: 12px 24px;
-    font-size: 18px; /* Tamaño ligeramente menor en móviles */
-    font-weight: 700; /* Negrita un poco menos gruesa */
+    font-size: 18px; 
+    font-weight: 700; 
   }
   
   .home-title {

@@ -2,18 +2,29 @@ import React from 'react';
 import '../styles/VozButton.css';
 
 interface VozButtonProps {
-  src: string;
+  src?: string;
   alt: string;
   className?: string;
-  color?: string; // Nuevo prop para el color
+  color?: string;
+  text?: string;
 }
 
-const VozButton: React.FC<VozButtonProps> = ({ src, alt, className, color }) => {
+const VozButton: React.FC<VozButtonProps> = ({ src, alt, className, color, text }) => {
   const speak = () => {
+    // Detener cualquier síntesis de voz en curso
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(alt);
+    
+    // Crear el utterance con el texto que debe ser pronunciado
+    const utterance = new SpeechSynthesisUtterance(text || alt);
     utterance.lang = 'es-ES';
-    utterance.rate = 1.0;
+    utterance.rate = 0.9; // Velocidad ligeramente más lenta para mejor comprensión
+    
+    // Configurar el manejador de errores
+    utterance.onerror = (event) => {
+      console.error('Error en síntesis de voz:', event);
+    };
+    
+    // Iniciar la síntesis de voz
     window.speechSynthesis.speak(utterance);
   };
 
@@ -21,12 +32,17 @@ const VozButton: React.FC<VozButtonProps> = ({ src, alt, className, color }) => 
     <button 
       className={`voz-button ${className || ''}`} 
       onClick={speak}
-      aria-label={`Decir: ${alt}`}
-      style={{ backgroundColor: color }} // Aplica el color aquí
+      aria-label={`Decir: ${text || alt}`}
+      style={{ backgroundColor: color }}
     >
-      <img src={src} alt={alt} className="voz-button-img" />
+      {/* Mostrar imagen solo si src está proporcionado */}
+      {src && <img src={src} alt={alt} className="voz-button-img" />}
+      
+      {/* Mostrar texto del botón (alt) */}
       <span className="voz-button-text">{alt}</span>
-      <span className="voz-icon">🔊</span>
+      
+      {/* Icono de altavoz */}
+      <span className="voz-icon" role="img" aria-label="Altavoz">🔊</span>
     </button>
   );
 };
