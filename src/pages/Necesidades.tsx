@@ -34,7 +34,7 @@ export default function Necesidades() {
         />
         <VozButton 
           src="/images/inodoro.gif" 
-          alt="Necesito ir al baño 💩🚽 " 
+          alt="Necesito ir al baño " 
           className="necesidad-button"
           color="#ffae8c"
         />

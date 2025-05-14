@@ -12,7 +12,7 @@ import EyeControl from "../components/EyeControl";
 const App: React.FC = () => {
   return (
     <Router>
-      
+      <EyeControl/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/necesidades" element={<Necesidades />} /> 

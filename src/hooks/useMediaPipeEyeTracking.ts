@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { FaceMesh, Results } from "@mediapipe/face_mesh";
 import { Camera } from "@mediapipe/camera_utils";
-import { moveCustomCursor } from "./useCustomCursor";
+import { moveCustomCursor } from "./useCustomCursor.ts";
 
 export function useMediaPipeEyeTracking() {
   const velocityRef = useRef({ vx: 0, vy: 0 });
   const cursorRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const inactivityTimerRef = useRef<number | null>(null);
+  const isInDeadZoneRef = useRef(false);
 
   useEffect(() => {
     const video = document.createElement("video");
@@ -14,9 +16,15 @@ export function useMediaPipeEyeTracking() {
     video.playsInline = true;
     document.body.appendChild(video);
 
+    //Importacion de archivo wasm para evitar errores
     const faceMesh = new FaceMesh({
-      locateFile: (file) =>
-        `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
+      locateFile: (file) => {
+        if (file === 'face_mesh_solution_simd_wasm_bin.js' || 
+            file === 'face_mesh_solution_simd_wasm_bin.wasm') {
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+        }
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+      }
     });
 
     faceMesh.setOptions({
@@ -37,11 +45,30 @@ export function useMediaPipeEyeTracking() {
         cursorRef.current.y = Math.max(0, Math.min(window.innerHeight, cursorRef.current.y));
 
         moveCustomCursor(cursorRef.current.x, cursorRef.current.y);
+        
+        // Resetear el timer si hay movimiento
+        if (inactivityTimerRef.current) {
+          clearTimeout(inactivityTimerRef.current);
+          inactivityTimerRef.current = null;
+        }
+        isInDeadZoneRef.current = false;
       }
 
       requestAnimationFrame(updateCursorLoop);
     }
     requestAnimationFrame(updateCursorLoop);
+
+    function triggerClick() {
+      const element = document.elementFromPoint(cursorRef.current.x, cursorRef.current.y);
+      if (element) {
+        const clickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        element.dispatchEvent(clickEvent);
+      }
+    }
 
     faceMesh.onResults(onResults);
 
@@ -71,8 +98,8 @@ export function useMediaPipeEyeTracking() {
       const iris = landmarks[468];
       const left = landmarks[133];
       const right = landmarks[33]; 
-      const top = landmarks[159]; //párpado superior
-      const bottom = landmarks[145]; //párpado inferior
+      const top = landmarks[159];
+      const bottom = landmarks[145];
 
       const eyeWidth = right.x - left.x;
       const eyeHeight = bottom.y - top.y;
@@ -83,17 +110,36 @@ export function useMediaPipeEyeTracking() {
       const centerX = 0.5;
       const centerY = 0.5; 
 
-      const deadZone = 0.1; //Zona muerta para evitar movimientos por accidente
-      const speedFactor = 30; //Velocidad de movimiento en X y Y
+      const deadZone = 0.1;
+      const speedFactor = 30;
 
       let deltaX = relativeX - centerX;
       let deltaY = relativeY - centerY;
 
-      //Si esta dentro de la zona muerta, no mover el mouse
+      const isInDeadZone = Math.abs(deltaX) < deadZone && Math.abs(deltaY) < deadZone;
+
+      if (isInDeadZone) {
+        if (!isInDeadZoneRef.current) {
+          // Acabamos de entrar en la zona muerta
+          isInDeadZoneRef.current = true;
+          inactivityTimerRef.current = window.setTimeout(() => {
+            triggerClick();
+          }, 3000);
+        }
+      } else {
+        // Salimos de la zona muerta
+        if (inactivityTimerRef.current) {
+          clearTimeout(inactivityTimerRef.current);
+          inactivityTimerRef.current = null;
+        }
+        isInDeadZoneRef.current = false;
+      }
+
+      // Si esta dentro de la zona muerta, no mover el mouse
       if (Math.abs(deltaX) < deadZone) deltaX = 0;
       if (Math.abs(deltaY) < deadZone) deltaY = 0;
 
-      //Ajuste de la velocidad de movimiento
+      // Ajuste de la velocidad de movimiento
       velocityRef.current = {
         vx: deltaX * speedFactor,
         vy: deltaY * speedFactor,
@@ -103,6 +149,9 @@ export function useMediaPipeEyeTracking() {
     return () => {
       faceMesh.close();
       document.body.removeChild(video);
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
     };
   }, []);
 }
