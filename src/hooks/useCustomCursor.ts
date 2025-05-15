@@ -12,9 +12,9 @@ export function useCustomCursor() {
         position: fixed;
         top: 0;
         left: 0;
-        width: 15px;
-        height: 15px;
-        background-color: lime;
+        width: 40px;
+        height: 40px;
+        background-color: blue;
         border-radius: 50%;
         pointer-events: none;
         transform: translate(-50%, -50%);

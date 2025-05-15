@@ -124,7 +124,7 @@ export function useMediaPipeEyeTracking() {
           isInDeadZoneRef.current = true;
           inactivityTimerRef.current = window.setTimeout(() => {
             triggerClick();
-          }, 3000);
+          }, 2000);
         }
       } else {
         // Salimos de la zona muerta

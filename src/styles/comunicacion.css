@@ -137,14 +137,14 @@
 }
 /* Ajustes para el texto en mayúsculas */
 .keyboard-key {
-  min-width: 50px;
-  height: 60px;
-  padding: 0 15px;
+  min-width: 70px;
+  height: 80px;
+  padding: 0 20px;
   background-color: #ffffff;
   color: #1e2a3a;
   border: 2px solid #059db1;
   border-radius: 8px;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -157,7 +157,9 @@
 }
 
 .special-keys .keyboard-key {
-  min-width: 100px;
+  min-width: 120px;
+  height: 80px;
+  font-size: 24px;
 }
 
 /* Efectos al interactuar con las teclas */
