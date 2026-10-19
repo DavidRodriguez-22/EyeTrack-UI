@@ -13,7 +13,7 @@ export default function ImageButton({ src, alt, to, color = "#da8585" }: ImageBu
   const navigate = useNavigate();
 
   const handleClick = () => navigate(to);
-  
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -25,6 +25,7 @@ export default function ImageButton({ src, alt, to, color = "#da8585" }: ImageBu
     <div
       className="image-button"
       role="button"
+      data-interactive="true"
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
@@ -42,7 +43,6 @@ export default function ImageButton({ src, alt, to, color = "#da8585" }: ImageBu
       }}
     >
       <img src={src} alt={alt} className="image-button-img" />
-      <span className="image-button-text">{alt}</span>
     </div>
   );
 }

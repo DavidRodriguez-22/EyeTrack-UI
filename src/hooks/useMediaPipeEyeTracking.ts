@@ -1,157 +1,218 @@
-import { useEffect, useRef } from "react";
-import { FaceMesh, Results } from "@mediapipe/face_mesh";
-import { Camera } from "@mediapipe/camera_utils";
-import { moveCustomCursor } from "./useCustomCursor.ts";
+// src/hooks/useMediaPipeEyeTracking.ts
+import { useEffect, useRef, useState, useCallback } from "react";
+import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
+import { moveCustomCursor, updateDwellProgress } from "./useCustomCursor";
+import { EyeFeatures, gazeModel } from "../utils/gazeRegression";
 
 export function useMediaPipeEyeTracking() {
-  const velocityRef = useRef({ vx: 0, vy: 0 });
-  const cursorRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-  const inactivityTimerRef = useRef<number | null>(null);
-  const isInDeadZoneRef = useRef(false);
+  const [currentFeatures, setCurrentFeatures] = useState<EyeFeatures | null>(null);
+  const [isCalibrated, setIsCalibrated] = useState<boolean>(false);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+
+  const smoothedPos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const dwellStartTime = useRef<number | null>(null);
+  const lastTargetElement = useRef<Element | null>(null);
+  const isPausedRef = useRef(isPaused);
+
+  isPausedRef.current = isPaused;
+
+  const togglePause = useCallback(() => {
+    setIsPaused((prev) => !prev);
+    updateDwellProgress(0);
+  }, []);
+
+  const checkCalibrationStatus = useCallback(() => {
+    setIsCalibrated(gazeModel.getStatus());
+  }, []);
 
   useEffect(() => {
+    let isMounted = true;
+    let faceLandmarker: FaceLandmarker | null = null;
+    let animationFrameId: number | null = null;
+    let mediaStream: MediaStream | null = null;
+
     const video = document.createElement("video");
-    video.style.display = "none";
+    video.style.position = "fixed";
+    video.style.bottom = "0";
+    video.style.right = "0";
+    video.style.width = "160px";
+    video.style.height = "120px";
+    video.style.zIndex = "-1";
+    video.style.opacity = "0.01";
     video.autoplay = true;
     video.playsInline = true;
     document.body.appendChild(video);
 
-    //Importacion de archivo wasm para evitar errores
-    const faceMesh = new FaceMesh({
-      locateFile: (file) => {
-        if (file === 'face_mesh_solution_simd_wasm_bin.js' || 
-            file === 'face_mesh_solution_simd_wasm_bin.wasm') {
-          return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
-        }
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
-      }
-    });
-
-    faceMesh.setOptions({
-      maxNumFaces: 1,
-      refineLandmarks: true,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5,
-    });
-
-    function updateCursorLoop() {
-      const { vx, vy } = velocityRef.current;
-
-      if (Math.abs(vx) > 0.1 || Math.abs(vy) > 0.1) {
-        cursorRef.current.x += vx;
-        cursorRef.current.y += vy;
-
-        cursorRef.current.x = Math.max(0, Math.min(window.innerWidth, cursorRef.current.x));
-        cursorRef.current.y = Math.max(0, Math.min(window.innerHeight, cursorRef.current.y));
-
-        moveCustomCursor(cursorRef.current.x, cursorRef.current.y);
-        
-        // Resetear el timer si hay movimiento
-        if (inactivityTimerRef.current) {
-          clearTimeout(inactivityTimerRef.current);
-          inactivityTimerRef.current = null;
-        }
-        isInDeadZoneRef.current = false;
-      }
-
-      requestAnimationFrame(updateCursorLoop);
-    }
-    requestAnimationFrame(updateCursorLoop);
-
-    function triggerClick() {
-      const element = document.elementFromPoint(cursorRef.current.x, cursorRef.current.y);
-      if (element) {
-        const clickEvent = new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window
-        });
-        element.dispatchEvent(clickEvent);
-      }
-    }
-
-    faceMesh.onResults(onResults);
-
-    const startCamera = async () => {
+    const initMediaPipe = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-        await video.play();
-        const camera = new Camera(video, {
-          onFrame: async () => {
-            await faceMesh.send({ image: video });
+        const filesetResolver = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/wasm"
+        );
+
+        if (!isMounted) return;
+
+        faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
+          baseOptions: {
+            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+            delegate: "GPU",
           },
-          width: 640,
-          height: 480,
+          runningMode: "VIDEO",
+          numFaces: 1,
         });
-        camera.start();
+
+        if (!isMounted) return;
+
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (!isMounted) {
+          mediaStream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+
+        video.srcObject = mediaStream;
+        await video.play();
+
+        let lastVideoTime = -1;
+        const processFrame = () => {
+          if (!isMounted) return;
+
+          if (faceLandmarker && video.currentTime !== lastVideoTime && video.readyState >= 2) {
+            lastVideoTime = video.currentTime;
+            const results = faceLandmarker.detectForVideo(video, performance.now());
+
+            if (results.faceLandmarks && results.faceLandmarks.length > 0) {
+              const landmarks = results.faceLandmarks[0];
+
+              const leftIris = landmarks[468];
+              const leftCornerIn = landmarks[133];
+              const leftCornerOut = landmarks[33];
+
+              const rightIris = landmarks[473];
+              const rightCornerIn = landmarks[362];
+              const rightCornerOut = landmarks[263];
+
+              if (leftIris && rightIris) {
+                const leftWidth = Math.hypot(leftCornerOut.x - leftCornerIn.x, leftCornerOut.y - leftCornerIn.y) || 0.05;
+                const leftCenterX = (leftCornerIn.x + leftCornerOut.x) / 2;
+                const leftCenterY = (leftCornerIn.y + leftCornerOut.y) / 2;
+
+                const rightWidth = Math.hypot(rightCornerOut.x - rightCornerIn.x, rightCornerOut.y - rightCornerIn.y) || 0.05;
+                const rightCenterX = (rightCornerIn.x + rightCornerOut.x) / 2;
+                const rightCenterY = (rightCornerIn.y + rightCornerOut.y) / 2;
+
+                const features: EyeFeatures = {
+                  leftIrisX: (leftIris.x - leftCenterX) / leftWidth,
+                  leftIrisY: (leftIris.y - leftCenterY) / leftWidth,
+                  rightIrisX: (rightIris.x - rightCenterX) / rightWidth,
+                  rightIrisY: (rightIris.y - rightCenterY) / rightWidth,
+                };
+
+                setCurrentFeatures(features);
+
+                if (gazeModel.getStatus() && !isPausedRef.current) {
+                  const rawPoint = gazeModel.predict(features);
+                  if (rawPoint) {
+                    const alpha = 0.2;
+                    smoothedPos.current.x += alpha * (rawPoint.x - smoothedPos.current.x);
+                    smoothedPos.current.y += alpha * (rawPoint.y - smoothedPos.current.y);
+
+                    let targetX = smoothedPos.current.x;
+                    let targetY = smoothedPos.current.y;
+
+                    const hoveredElem = document.elementFromPoint(targetX, targetY);
+                    let interactiveElem = hoveredElem?.closest("button, a, [role='button'], [data-interactive='true']");
+
+                    // --- IMÁN PEGAJOSO (HISTÉRESIS / PERIODO DE GRACIA) ---
+                    // Si ya estamos enganchados a un botón, será MUY difícil soltarlo accidentalmente
+                    if (lastTargetElement.current && lastTargetElement.current !== interactiveElem) {
+                      const rect = lastTargetElement.current.getBoundingClientRect();
+                      const centerX = rect.left + rect.width / 2;
+                      const centerY = rect.top + rect.height / 2;
+                      const dist = Math.hypot(targetX - centerX, targetY - centerY);
+                      
+                      // Radio de escape gigante (250px): Tolera temblores graves del ojo
+                      if (dist < 250) {
+                        interactiveElem = lastTargetElement.current;
+                      }
+                    }
+
+                    if (interactiveElem) {
+                      const rect = interactiveElem.getBoundingClientRect();
+                      const centerX = rect.left + rect.width / 2;
+                      const centerY = rect.top + rect.height / 2;
+
+                      // Centrar visualmente de inmediato
+                      targetX = centerX;
+                      targetY = centerY;
+                    }
+
+                    moveCustomCursor(targetX, targetY);
+                    handleDwellClick(interactiveElem);
+                  }
+                }
+              } else {
+                setCurrentFeatures(null);
+              }
+            } else {
+              setCurrentFeatures(null);
+            }
+          }
+          animationFrameId = requestAnimationFrame(processFrame);
+        };
+
+        processFrame();
       } catch (err) {
-        console.error("No se pudo acceder a la cámara:", err);
+        console.error("Error en MediaPipe:", err);
       }
     };
-    startCamera();
 
-    function onResults(results: Results) {
-      if (!results.multiFaceLandmarks?.length) return;
-      const landmarks = results.multiFaceLandmarks[0];
+    const handleDwellClick = (interactiveTarget: Element | null | undefined) => {
+      if (interactiveTarget) {
+        if (lastTargetElement.current !== interactiveTarget) {
+          // Entramos a un elemento nuevo
+          lastTargetElement.current = interactiveTarget;
+          dwellStartTime.current = performance.now();
+        } else if (dwellStartTime.current) {
+          // Llenando la barra verde de confirmación
+          const elapsed = performance.now() - dwellStartTime.current;
+          const dwellDuration = 1500; // 1.5 segundos
+          const progressPercent = Math.min(100, (elapsed / dwellDuration) * 100);
 
-      const iris = landmarks[468];
-      const left = landmarks[133];
-      const right = landmarks[33]; 
-      const top = landmarks[159];
-      const bottom = landmarks[145];
+          updateDwellProgress(progressPercent);
 
-      const eyeWidth = right.x - left.x;
-      const eyeHeight = bottom.y - top.y;
-
-      const relativeX = (iris.x - left.x) / eyeWidth;
-      const relativeY = (iris.y - top.y) / eyeHeight;
-
-      const centerX = 0.5;
-      const centerY = 0.5; 
-
-      const deadZone = 0.1;
-      const speedFactor = 30;
-
-      let deltaX = relativeX - centerX;
-      let deltaY = relativeY - centerY;
-
-      const isInDeadZone = Math.abs(deltaX) < deadZone && Math.abs(deltaY) < deadZone;
-
-      if (isInDeadZone) {
-        if (!isInDeadZoneRef.current) {
-          // Acabamos de entrar en la zona muerta
-          isInDeadZoneRef.current = true;
-          inactivityTimerRef.current = window.setTimeout(() => {
-            triggerClick();
-          }, 2000);
+          if (elapsed >= dwellDuration) {
+            // Disparar Clic
+            const clickEvent = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+            interactiveTarget.dispatchEvent(clickEvent);
+            
+            // Pausar el temporizador para no hacer clics dobles (espera a que el usuario mire afuera)
+            dwellStartTime.current = null;
+            updateDwellProgress(0);
+          }
         }
       } else {
-        // Salimos de la zona muerta
-        if (inactivityTimerRef.current) {
-          clearTimeout(inactivityTimerRef.current);
-          inactivityTimerRef.current = null;
-        }
-        isInDeadZoneRef.current = false;
-      }
-
-      // Si esta dentro de la zona muerta, no mover el mouse
-      if (Math.abs(deltaX) < deadZone) deltaX = 0;
-      if (Math.abs(deltaY) < deadZone) deltaY = 0;
-
-      // Ajuste de la velocidad de movimiento
-      velocityRef.current = {
-        vx: deltaX * speedFactor,
-        vy: deltaY * speedFactor,
-      };
-    }
-
-    return () => {
-      faceMesh.close();
-      document.body.removeChild(video);
-      if (inactivityTimerRef.current) {
-        clearTimeout(inactivityTimerRef.current);
+        // Mirando al vacío
+        lastTargetElement.current = null;
+        dwellStartTime.current = null;
+        updateDwellProgress(0);
       }
     };
+
+    initMediaPipe();
+
+    return () => {
+      isMounted = false;
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      if (faceLandmarker) faceLandmarker.close();
+      if (mediaStream) mediaStream.getTracks().forEach((track) => track.stop());
+      if (video.parentNode) document.body.removeChild(video);
+    };
   }, []);
+
+  return {
+    currentFeatures,
+    isCalibrated,
+    isPaused,
+    togglePause,
+    checkCalibrationStatus,
+  };
 }
